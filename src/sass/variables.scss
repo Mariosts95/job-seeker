@@ -1,0 +1,26 @@
+:root {
+  // pallette
+  --primary-color: #0c6478;
+  --secondary-color: #c4c4c4;
+
+  --white: #f2f2f2;
+  --gray: #c4c4c4;
+  --light-gray: #eaeaea;
+  --black: #232323;
+  --blue: #0c6478;
+}
+// colors
+$primary_color: var(--primary-color);
+$secondary_color: var(--secondary-color);
+
+$white: var(--white);
+$gray: var(--gray);
+$light_gray: var(--light-gray);
+$black: var(--black);
+$blue: var(--blue);
+
+// breakpoints
+$sm_br: 600px;
+$md_br: 900px;
+$lg_br: 1200px;
+$xl_br: 1536px;

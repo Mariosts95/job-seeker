@@ -1,0 +1,24 @@
+{
+  "name": "job-seeker",
+  "author": "Marios Tsioutsis",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.3.0",
+    "vite": "^2.9.1",
+    "eslint": "^8.12.0",
+    "eslint-config-airbnb-prettier": "^1.1.0",
+    "prettier": "^2.6.1",
+    "rollup-plugin-react-scoped-css": "^0.6.1",
+    "sass": "^1.49.11"
+  }
+}
