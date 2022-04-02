@@ -1,6 +1,9 @@
 # job-seeker
 It's an interactive web application where a job seeker would be able to login, search for jobs, view a job and be able to apply.
 
+### Install the dependencies
+`yarn` or `npm install`
+
 ### Start the development server
 `yarn dev` or `npm run dev` 
 
