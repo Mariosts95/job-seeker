@@ -4,7 +4,15 @@ import Button from '../UI/Button';
 // import styles
 import './jobPost.scoped.scss';
 
-const JobPost = ({ companyName, jobTitle, createdAt, validUntil, address }) => {
+const JobPost = ({
+  companyName,
+  jobTitle,
+  createdAt,
+  validUntil,
+  address,
+  withButton = true,
+  buttonClickHandler,
+}) => {
   return (
     <div className='job-post-container flex'>
       <div className='image'>
@@ -50,9 +58,11 @@ const JobPost = ({ companyName, jobTitle, createdAt, validUntil, address }) => {
         </div>
       </div>
 
-      <div className='submit-container'>
-        <Button>Apply Now</Button>
-      </div>
+      {withButton && (
+        <div className='submit-container'>
+          <Button onClick={buttonClickHandler}>Apply Now</Button>
+        </div>
+      )}
     </div>
   );
 };

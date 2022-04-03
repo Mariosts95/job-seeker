@@ -13,8 +13,8 @@ const App = () => {
   return (
     <>
       <Header />
-      {/* <Login /> */}
-      {/* <JobPosts /> */}
+      <Login />
+      <JobPosts />
       <Success />
     </>
   );
