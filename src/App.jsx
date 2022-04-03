@@ -1,5 +1,6 @@
 // import views
 import Login from './screens/Login';
+import JobPosts from './screens/JobPosts';
 
 // import components
 import Header from './components/UI/Header';
@@ -11,7 +12,8 @@ const App = () => {
   return (
     <>
       <Header />
-      <Login />
+      {/* <Login /> */}
+      <JobPosts />
     </>
   );
 };
