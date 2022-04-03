@@ -9,6 +9,9 @@
   justify-content: center;
   // remove the header height
   height: calc(100vh - 55px);
+  @media (min-width: $md_br) {
+    max-width: 520px;
+  }
   .success-icon {
     margin: 0 0 20px;
   }
