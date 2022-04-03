@@ -3,3 +3,23 @@
   width: 100%;
   padding: 0 clamp(20px, 5.2083vw, 100px);
 }
+
+.flex {
+  display: flex;
+  &.column {
+    flex-direction: column;
+  }
+}
+
+.desktop {
+  display: none;
+  @media (min-width: $md_br) {
+    display: block;
+  }
+}
+.mobile {
+  display: block;
+  @media (min-width: $md_br) {
+    display: none;
+  }
+}

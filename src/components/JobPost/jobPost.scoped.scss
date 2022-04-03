@@ -1,0 +1,54 @@
+.job-post-container {
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 16px;
+  background-color: $light_gray;
+  font-size: 1.2rem;
+  margin: 0 0 12px;
+  @media (min-width: $md_br) {
+    align-items: center;
+  }
+
+  .image {
+    flex-basis: 25%;
+    margin: 0 20px 0 0;
+    max-width: 110px;
+    width: 100%;
+    @media (min-width: $md_br) {
+      flex-basis: unset;
+    }
+  }
+
+  .header {
+    flex-basis: calc(75% - 20px);
+    @media (min-width: $md_br) {
+      flex-basis: unset;
+      margin: 0 15px 0 0;
+    }
+    .company-name {
+      color: $gray;
+    }
+    .job-title {
+      font-size: 1.8rem;
+    }
+  }
+
+  .info {
+    flex-basis: 100%;
+    margin: 15px 0;
+    gap: 15px;
+    @media (min-width: $md_br) {
+      flex-basis: unset;
+      margin: 12px 0 0;
+    }
+  }
+
+  .submit-container {
+    flex-basis: 100%;
+    @media (min-width: $md_br) {
+      max-width: 140px;
+      width: 100%;
+      margin-left: auto;
+    }
+  }
+}
