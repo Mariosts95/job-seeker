@@ -1,6 +1,7 @@
 // import views
 import Login from './screens/Login';
 import JobPosts from './screens/JobPosts';
+import Success from './screens/Success';
 
 // import components
 import Header from './components/UI/Header';
@@ -13,7 +14,8 @@ const App = () => {
     <>
       <Header />
       {/* <Login /> */}
-      <JobPosts />
+      {/* <JobPosts /> */}
+      <Success />
     </>
   );
 };
