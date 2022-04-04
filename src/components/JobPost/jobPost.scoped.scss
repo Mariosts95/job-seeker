@@ -1,29 +1,28 @@
 .job-post-container {
   width: 100%;
-  flex-wrap: wrap;
+  grid-template-columns: minmax(50px, 85px) repeat(2, auto);
+  grid-template-rows: repeat(3, auto);
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
   padding: 16px;
   background-color: $light_gray;
   font-size: 1.2rem;
   margin: 0 0 12px;
   @media (min-width: $md_br) {
-    align-items: center;
+    grid-template-columns: minmax(80px, 110px) auto 140px;
+    grid-template-rows: repeat(2, auto);
   }
-
   .image {
-    flex-basis: 25%;
-    margin: 0 20px 0 0;
-    max-width: 110px;
-    width: 100%;
+    grid-area: 1 / 1 / 2 / 2;
+    align-self: center;
     @media (min-width: $md_br) {
-      flex-basis: unset;
+      grid-area: 1 / 1 / 3 / 2;
     }
   }
-
   .header {
-    flex-basis: calc(75% - 20px);
+    grid-area: 1 / 2 / 2 / 4;
     @media (min-width: $md_br) {
-      flex-basis: unset;
-      margin: 0 15px 0 0;
+      grid-area: 1 / 2 / 2 / 3;
     }
     .company-name {
       color: $gray;
@@ -32,23 +31,18 @@
       font-size: 1.8rem;
     }
   }
-
   .info {
-    flex-basis: 100%;
-    margin: 15px 0;
+    grid-area: 2 / 1 / 3 / 4;
     gap: 15px;
     @media (min-width: $md_br) {
-      flex-basis: unset;
-      margin: 12px 0 0;
+      grid-area: 2 / 2 / 3 / 3;
     }
   }
-
   .submit-container {
-    flex-basis: 100%;
+    grid-area: 3 / 1 / 4 / 4;
+    align-self: center;
     @media (min-width: $md_br) {
-      max-width: 140px;
-      width: 100%;
-      margin-left: auto;
+      grid-area: 1 / 3 / 3 / 4;
     }
   }
 }

@@ -1,5 +1,5 @@
 .job-posts-container {
-  max-width: 730px;
+  max-width: calc(700px + $side_padding * 2);
   width: 100%;
   margin: 0 auto;
   padding-top: 20px;

@@ -1,7 +1,7 @@
 // UI
 .page-container {
   width: 100%;
-  padding: 0 clamp(20px, 5.2083vw, 100px);
+  padding: 0 $side_padding;
 }
 
 .flex {
@@ -9,6 +9,10 @@
   &.column {
     flex-direction: column;
   }
+}
+
+.grid {
+  display: grid;
 }
 
 .desktop {

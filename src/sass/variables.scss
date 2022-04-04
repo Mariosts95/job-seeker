@@ -11,6 +11,7 @@
 
   // UI
   --border-radius: 4px;
+  --side-padding: clamp(20px, 5.2083vw, 100px);
 }
 // colors
 $primary_color: var(--primary-color);
@@ -24,6 +25,7 @@ $blue: var(--blue);
 
 // UI
 $border_radius: var(--border-radius);
+$side_padding: var(--side-padding);
 
 // breakpoints
 $sm_br: 600px;
