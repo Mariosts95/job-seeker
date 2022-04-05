@@ -1,3 +1,9 @@
+// import React
+import { useEffect, useState } from 'react';
+
+// import react router
+import { useNavigate } from 'react-router-dom';
+
 // import components
 import Button from '../components/UI/Button';
 
@@ -8,12 +14,38 @@ import SuccessIcon from '/icons/success.svg';
 import './success.scoped.scss';
 
 const Success = () => {
+  // redirect counter
+  const [countdown, setCountdown] = useState(5);
+  // initialize navigate hook
+  const navigate = useNavigate();
+
+  // redirect to home page after 5 seconds
+  useEffect(() => {
+    const redirectCountdown = setTimeout(() => {
+      setCountdown((prevCountdown) => prevCountdown - 1);
+      countdown === 0 && navigate('/');
+    }, 1 * 1000);
+
+    return () => {
+      clearTimeout(redirectCountdown);
+    };
+  }, [countdown]);
+
   return (
     <div className='page-container success-container'>
       <img className='success-icon' src={SuccessIcon} alt='success icon' />
       <p>Application successful</p>
       <h2 className='main-header-1 job-title'>Job Title Applied</h2>
-      <Button>Back to job list</Button>
+      <p className='redirect-msg'>
+        You we'll be redirected back automatically in {countdown}...
+      </p>
+      <Button
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        Back to job list
+      </Button>
     </div>
   );
 };

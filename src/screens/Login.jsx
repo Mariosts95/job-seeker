@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 // import styles
 import './login.scoped.scss';
 
@@ -5,12 +7,15 @@ import './login.scoped.scss';
 import LoginForm from '../components/LoginForm/';
 
 const Login = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className='page-container'>
-      <div className='title'>
-        <h1 className='main-header-1'>Login</h1>
-      </div>
-      <LoginForm />
+    <div className='login-page-container page-container'>
+      <LoginForm
+        onClick={() => {
+          navigate('/jobs');
+        }}
+      />
     </div>
   );
 };

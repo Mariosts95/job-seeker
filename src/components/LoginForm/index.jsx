@@ -5,7 +5,7 @@ import './loginForm.scoped.scss';
 import Button from '../UI/Button';
 import Input from '../UI/Input';
 
-const LoginForm = () => {
+const LoginForm = ({ onClick }) => {
   return (
     <form className='login-form'>
       <div className='inputs-container'>
@@ -30,6 +30,7 @@ const LoginForm = () => {
             e.preventDefault();
             console.log(document.getElementById('email').value);
             console.log(document.getElementById('password').value);
+            onClick();
           }}
         >
           Login
