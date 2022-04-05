@@ -12,10 +12,9 @@
   @media (min-width: $md_br) {
     max-width: 520px;
   }
-  .success-icon {
-    margin: 0 0 20px;
-  }
-  .job-title {
+  .success-icon,
+  .job-title,
+  .redirect-msg {
     margin: 0 0 20px;
   }
 }
