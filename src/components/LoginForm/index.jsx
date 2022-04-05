@@ -1,5 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
 
+// import react router
+import { useNavigate } from 'react-router-dom';
+
 // import styles
 import './loginForm.scoped.scss';
 
@@ -14,15 +17,28 @@ import {
   ValidateUser,
 } from '../../services/auth';
 
+// import context
+import { UseAuth } from '../../store/AuthProvider';
+
+// import custom hooks
+import useLocalStorageState from '../../hooks/useLocalStorageState';
+
 const LoginForm = () => {
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const { updateAuth } = UseAuth(); // update auth state in context
+
+  const navigate = useNavigate(); // initialize navigate hook
+
+  // use local storage custom hook to save user data in local storage
+  const [token, setToken] = useLocalStorageState('accessToken', '');
+  const [user, setUser] = useLocalStorageState('user', '');
+
+  const emailRef = useRef(); // use useRef to store the input values
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState(''); // general error state
 
   // set focus on email input on load
   useEffect(() => {
@@ -50,14 +66,18 @@ const LoginForm = () => {
       : setPasswordError(
           `Your password must have minimum eight characters, at least one letter, one number and one special character`
         );
+
+    // if there are no errors, proceed with login
     if (!emailError && !passwordError) {
       ValidateUser(email, password)
         .then(({ data }) => {
-          console.log(data);
+          setToken(data.token.accessToken); // save access token in local storage
+          setUser(data.user); // save user data in local storage
+          updateAuth(true); // update auth state in context
+          navigate('/jobs'); // navigate to jobs page
         })
         .catch(({ response }) => {
           const { data } = response;
-          console.log(data);
           setErrorMsg(data.message);
         });
     }
@@ -76,6 +96,12 @@ const LoginForm = () => {
           hasError={emailError}
           refValue={emailRef}
           value={email}
+          // validate email on blur to show error message
+          onBlur={() => {
+            ValidateEmail(email)
+              ? setEmailError('')
+              : setEmailError('Invalid email');
+          }}
           onChange={(e) => setEmail(e.target.value)}
         />
         {emailError && <div className='error-msg'>{emailError}</div>}
@@ -86,8 +112,15 @@ const LoginForm = () => {
           labelText='Enter your password:'
           required
           hasError={passwordError}
-          refValue={passwordRef}
           value={password}
+          // validate password on blur to show error message
+          onBlur={() => {
+            ValidatePassword(password)
+              ? setPasswordError('')
+              : setPasswordError(
+                  `Your password must have minimum eight characters, at least one letter, one number and one special character`
+                );
+          }}
           onChange={(e) => setPassword(e.target.value)}
         />
         {passwordError && <div className='error-msg'>{passwordError}</div>}

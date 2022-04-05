@@ -12,6 +12,7 @@ const Input = ({
   required,
   hasError,
   autoComplete = 'off',
+  onBlur,
 }) => {
   return (
     <div className='input'>
@@ -25,6 +26,7 @@ const Input = ({
         autoComplete={autoComplete}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
         required={required}
       />
     </div>
