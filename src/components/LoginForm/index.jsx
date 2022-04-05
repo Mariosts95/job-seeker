@@ -7,7 +7,10 @@ import './loginForm.scoped.scss';
 import Button from '../UI/Button';
 import Input from '../UI/Input';
 
-const LoginForm = ({ onClick }) => {
+// import services
+import { ValidateEmail, ValidatePassword } from '../../services/auth';
+
+const LoginForm = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -17,7 +20,7 @@ const LoginForm = ({ onClick }) => {
   const [passwordError, setPasswordError] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
-  // set focus on email input
+  // set focus on email input on load
   useEffect(() => {
     emailRef.current.focus();
   }, []);
@@ -37,12 +40,12 @@ const LoginForm = ({ onClick }) => {
   // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    ValidateEmail(email);
-    console.log(ValidateEmail(email));
-    console.log(password);
-    setEmailError('Email Error');
-    setPasswordError('Password Error');
-    setErrorMsg('Error Message');
+    ValidateEmail(email) ? setEmailError('') : setEmailError('Invalid email');
+    ValidatePassword(password)
+      ? setPasswordError('')
+      : setPasswordError(
+          `Your password must have minimum eight characters, at least one letter, one number and one special character`
+        );
   };
 
   return (
