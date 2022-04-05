@@ -8,7 +8,11 @@ import Button from '../UI/Button';
 import Input from '../UI/Input';
 
 // import services
-import { ValidateEmail, ValidatePassword } from '../../services/auth';
+import {
+  ValidateEmail,
+  ValidatePassword,
+  ValidateUser,
+} from '../../services/auth';
 
 const LoginForm = () => {
   const emailRef = useRef();
@@ -46,6 +50,17 @@ const LoginForm = () => {
       : setPasswordError(
           `Your password must have minimum eight characters, at least one letter, one number and one special character`
         );
+    if (!emailError && !passwordError) {
+      ValidateUser(email, password)
+        .then(({ data }) => {
+          console.log(data);
+        })
+        .catch(({ response }) => {
+          const { data } = response;
+          console.log(data);
+          setErrorMsg(data.message);
+        });
+    }
   };
 
   return (
