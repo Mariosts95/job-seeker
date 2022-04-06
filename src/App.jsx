@@ -13,9 +13,12 @@ import Header from './components/UI/Header';
 // import styles
 import './sass/index.scss';
 
+// Context
+import AuthProvider from './store/AuthProvider';
+
 const App = () => {
   return (
-    <>
+    <AuthProvider>
       <Header />
       <Routes>
         <Route path='/' index element={<Login />} />
@@ -23,7 +26,7 @@ const App = () => {
         <Route path='/success' element={<Success />} />
         <Route path='*' element={<Error404 />} />
       </Routes>
-    </>
+    </AuthProvider>
   );
 };
 

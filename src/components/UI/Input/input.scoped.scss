@@ -16,5 +16,9 @@
       border: 1px solid $blue;
       outline: none;
     }
+    &.error {
+      border: 1px solid #fa3741;
+      background-color: #ffc7ca;
+    }
   }
 }
