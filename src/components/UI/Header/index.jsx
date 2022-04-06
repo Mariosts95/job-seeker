@@ -1,3 +1,6 @@
+// import react router
+import { Link } from 'react-router-dom';
+
 // import styles
 import './header.scoped.scss';
 
@@ -12,11 +15,11 @@ const Header = () => {
     <header className='main-header'>
       <div className='header-wrapper flex'>
         <div className='header-logo'>
-          <a href='/'>kariera.gr</a>
+          <Link to='/'>kariera.gr</Link>
         </div>
         {isAuth && (
           <div className='logout'>
-            <a href='/'>Logout</a>
+            <Link to='/'>Logout</Link>
           </div>
         )}
       </div>

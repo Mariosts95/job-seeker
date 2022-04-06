@@ -20,22 +20,28 @@ const JobPost = ({
       </div>
 
       <div className='header'>
-        <p className='company-name bold'>Techbase</p>
-        <h3 className='job-title bold'>Legacy Brand Analyst</h3>
+        <p className='company-name bold'>{companyName}</p>
+        <h3 className='job-title bold'>{jobTitle}</h3>
       </div>
 
       <div className='info flex'>
         <div className='date-posted'>
           <p>Date posted</p>
-          <p className='bold'>13 Apr</p>
+          <p className='bold'>{`${new Date(+createdAt).toLocaleDateString(
+            'en-GB',
+            { day: 'numeric', month: 'short' }
+          )}`}</p>
         </div>
         <div className='apply-until'>
           <p>Apply until</p>
-          <p className='bold'>23 May</p>
+          <p className='bold'>{`${new Date(+validUntil).toLocaleDateString(
+            'en-GB',
+            { day: 'numeric', month: 'short' }
+          )}`}</p>
         </div>
         <div className='location'>
           <p>Location</p>
-          <p className='bold'>Russia</p>
+          <p className='bold'>{address}</p>
         </div>
       </div>
 
