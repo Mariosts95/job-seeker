@@ -12,6 +12,9 @@ import useLocalStorageState from '../../hooks/useLocalStorageState';
 // import services
 import { getJob } from '../../services/jobs';
 
+// import context
+import { UseAuth } from '../../store/AuthProvider';
+
 // import styles
 import './modal.scoped.scss';
 
@@ -21,16 +24,19 @@ const Modal = ({ isOpen, onClose, jobId }) => {
   // get access token from local storage
   const [token, _] = useLocalStorageState('accessToken', '');
 
+  const { isAuth } = UseAuth();
+
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'auto';
 
-    getJob(token, jobId)
-      .then(({ data }) => {
-        setJob(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    isAuth &&
+      getJob(token, jobId)
+        .then(({ data }) => {
+          setJob(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   }, [isOpen]);
 
   if (!isOpen) return null;

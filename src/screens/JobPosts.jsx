@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 
+// import react router
+import { useNavigate } from 'react-router-dom';
+
 // import components
 import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
@@ -15,6 +18,7 @@ import useLocalStorageState from '../hooks/useLocalStorageState';
 
 // import context
 import { UseJobs } from '../store/JobsProvider';
+import { UseAuth } from '../store/AuthProvider';
 
 const JobPosts = () => {
   // modal state
@@ -29,10 +33,15 @@ const JobPosts = () => {
 
   // access jobs state from context
   const { jobs, jobsLoading, updateJobs, totalJobs, totalPages } = UseJobs();
+  const { isAuth } = UseAuth();
+
+  // initialize navigate hook
+  const navigate = useNavigate();
 
   // update jobs on mount
   useEffect(() => {
-    updateJobs(currentPage);
+    if (!isAuth) navigate('/');
+    isAuth && updateJobs(currentPage);
   }, []);
 
   // open modal handler
