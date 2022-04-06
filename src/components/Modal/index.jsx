@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 // import components
@@ -6,15 +6,35 @@ import Button from '../UI/Button';
 import Input from '../UI/Input';
 import JobPost from '../JobPost';
 
+// import custom hooks
+import useLocalStorageState from '../../hooks/useLocalStorageState';
+
+// import services
+import { getJob } from '../../services/jobs';
+
 // import styles
 import './modal.scoped.scss';
 
-const Modal = ({ isOpen, onClose }) => {
+const Modal = ({ isOpen, onClose, jobId }) => {
+  const [job, setJob] = useState();
+
+  // get access token from local storage
+  const [token, _] = useLocalStorageState('accessToken', '');
+
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+
+    getJob(token, jobId)
+      .then(({ data }) => {
+        setJob(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [isOpen]);
 
   if (!isOpen) return null;
+  if (!job) return null;
 
   return createPortal(
     <>
@@ -26,30 +46,17 @@ const Modal = ({ isOpen, onClose }) => {
             X
           </span>
         </div>
-        <JobPost withButton={false} />
+        <JobPost
+          withButton={false}
+          companyName={job.companyName}
+          jobTitle={job.title}
+          address={job.address}
+          createdAt={job.createdAt}
+          validUntil={job.validUntil}
+        />
 
         <div className='modal-body'>
-          <div className='modal-section'>
-            <h4 className='modal-section-title bold'>Job details</h4>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Augue in
-              diam eu in eget. Rhoncus mauris aenean malesuada lacus, morbi
-              cras. Massa nullam amet proin blandit diam cursus. Mattis sit sed
-              enim phasellus mattis nulla. Vitae pharetra, at aenean sit
-              viverra. Dolor cursus vitae.
-            </p>
-          </div>
-          <div className='modal-section'>
-            <h4 className='modal-section-title bold'>Requirements</h4>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Augue in
-              diam eu in eget. Rhoncus mauris aenean malesuada lacus, morbi
-              cras. Massa nullam amet proin blandit diam cursus. Mattis sit sed
-              enim phasellus mattis nulla. Vitae pharetra, at aenean sit
-              viverra. Dolor cursus vitae.
-            </p>
-          </div>
-
+          <div dangerouslySetInnerHTML={{ __html: job.description }}></div>
           <div className='application-form'>
             <Input
               labelText='How many years of experience?'

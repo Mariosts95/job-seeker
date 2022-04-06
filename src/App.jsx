@@ -15,17 +15,22 @@ import './sass/index.scss';
 
 // Context
 import AuthProvider from './store/AuthProvider';
+import JobsProvider from './store/JobsProvider';
 
 const App = () => {
   return (
     <AuthProvider>
-      <Header />
-      <Routes>
-        <Route path='/' index element={<Login />} />
-        <Route path='/jobs' element={<JobPosts />} />
-        <Route path='/success' element={<Success />} />
-        <Route path='*' element={<Error404 />} />
-      </Routes>
+      <JobsProvider>
+        <Header />
+        <Routes>
+          <Route path='/' index element={<Login />} />
+          <Route path='/jobs' element={<JobPosts />}>
+            <Route path=':id' element={<JobPosts />} />
+          </Route>
+          <Route path='/success' element={<Success />} />
+          <Route path='*' element={<Error404 />} />
+        </Routes>
+      </JobsProvider>
     </AuthProvider>
   );
 };
