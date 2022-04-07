@@ -15,7 +15,7 @@ const useLocalStorageState = (key, initialValue) => {
   const [state, setState] = useState(() => {
     if (supportsLocalStorage()) {
       // Get from local storage by key
-      const item = window.localStorage.getItem(key);
+      const item = localStorage.getItem(key);
       // Parse stored json or if none return initialValue
       return item ? JSON.parse(item) : initialValue;
     }
@@ -25,7 +25,7 @@ const useLocalStorageState = (key, initialValue) => {
 
   useEffect(() => {
     if (supportsLocalStorage()) {
-      window.localStorage.setItem(key, JSON.stringify(state));
+      localStorage.setItem(key, JSON.stringify(state));
     }
   }, [key, state]);
 

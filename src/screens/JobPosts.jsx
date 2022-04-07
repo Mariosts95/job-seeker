@@ -21,6 +21,10 @@ import { UseJobs } from '../store/JobsProvider';
 import { UseAuth } from '../store/AuthProvider';
 
 const JobPosts = () => {
+  // access jobs state from context
+  const { jobs, jobsLoading, updateJobs, totalJobs, totalPages } = UseJobs();
+  const { isAuth } = UseAuth();
+
   // modal state
   const [jobModalIsOpen, setJobModalIsOpen] = useState(false);
   const [jobId, setJobId] = useState('');
@@ -29,19 +33,17 @@ const JobPosts = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   // read user email from local storage
-  const [user, _] = useLocalStorageState('user', '');
-
-  // access jobs state from context
-  const { jobs, jobsLoading, updateJobs, totalJobs, totalPages } = UseJobs();
-  const { isAuth } = UseAuth();
+  const [user, __] = useLocalStorageState('user');
+  // get access token from local storage
+  const [token, _] = useLocalStorageState('accessToken');
 
   // initialize navigate hook
   const navigate = useNavigate();
 
   // update jobs on mount
   useEffect(() => {
-    if (!isAuth) navigate('/');
-    isAuth && updateJobs(currentPage);
+    if (!isAuth) return navigate('/');
+    updateJobs(token, currentPage);
   }, []);
 
   // open modal handler
@@ -53,6 +55,8 @@ const JobPosts = () => {
   const closeJobModal = () => {
     setJobModalIsOpen(false);
   };
+
+  if (jobsLoading || jobs?.length === 0) return <Loader />;
 
   return (
     <>
@@ -74,7 +78,7 @@ const JobPosts = () => {
           </div>
 
           <h2 className='main-header-1 results-title'>
-            Showing {jobsLoading ? 0 : jobs.length} of {totalJobs} job posts
+            Showing {jobsLoading ? 0 : jobs?.length} of {totalJobs} job posts
           </h2>
         </div>
 
@@ -101,7 +105,7 @@ const JobPosts = () => {
               onClick={() => {
                 if (currentPage < totalPages) {
                   setCurrentPage(currentPage + 1);
-                  updateJobs(currentPage + 1);
+                  updateJobs(token, currentPage + 1);
                 }
               }}
             >

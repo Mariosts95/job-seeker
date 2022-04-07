@@ -1,5 +1,5 @@
 // import react router
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // import styles
 import './header.scoped.scss';
@@ -7,9 +7,14 @@ import './header.scoped.scss';
 // import context
 import { UseAuth } from '../../../store/AuthProvider';
 
+// import utils
+import { LogoutUser } from '../../../utils/auth';
+
 const Header = () => {
+  const navigate = useNavigate();
+
   // access auth state from context
-  const { isAuth } = UseAuth();
+  const { isAuth, updateAuth } = UseAuth();
 
   return (
     <header className='main-header'>
@@ -19,7 +24,17 @@ const Header = () => {
         </div>
         {isAuth && (
           <div className='logout'>
-            <Link to='/'>Logout</Link>
+            <Link
+              to='#'
+              onClick={(e) => {
+                e.preventDefault();
+                LogoutUser();
+                updateAuth(false);
+                navigate('/');
+              }}
+            >
+              Logout
+            </Link>
           </div>
         )}
       </div>

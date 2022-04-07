@@ -94,8 +94,7 @@ const LoginForm = () => {
         navigate('/jobs'); // navigate to jobs page
       })
       .catch(({ response }) => {
-        const { data } = response;
-        setErrorMsg(data.message);
+        setErrorMsg(response?.data?.message);
       });
   };
 
