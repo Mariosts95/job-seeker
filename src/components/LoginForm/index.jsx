@@ -83,21 +83,20 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // if there are no errors, proceed with login
-    if (formIsValid) {
-      ValidateUser(email, password)
-        .then(({ data }) => {
-          setToken(data.token.accessToken); // save access token in local storage
-          setUser(data.user); // save user data in local storage
-          updateAuth(true); // update auth state in context
-          emailReset(); // reset email input
-          passwordReset(); // reset password input
-          navigate('/jobs'); // navigate to jobs page
-        })
-        .catch(({ response }) => {
-          const { data } = response;
-          setErrorMsg(data.message);
-        });
-    }
+    if (!formIsValid) return;
+    ValidateUser(email, password)
+      .then(({ data }) => {
+        setToken(data.token.accessToken); // save access token in local storage
+        setUser(data.user); // save user data in local storage
+        updateAuth(true); // update auth state in context
+        emailReset(); // reset email input
+        passwordReset(); // reset password input
+        navigate('/jobs'); // navigate to jobs page
+      })
+      .catch(({ response }) => {
+        const { data } = response;
+        setErrorMsg(data.message);
+      });
   };
 
   return (
