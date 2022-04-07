@@ -22,6 +22,12 @@ const useInput = (validate, errorMsg) => {
     setIsDirty(true);
   };
 
+  // reset the value and error message
+  const reset = () => {
+    setValue('');
+    setErrorMessage('');
+  };
+
   return {
     value,
     errorMessage,
@@ -29,6 +35,7 @@ const useInput = (validate, errorMsg) => {
     isValid,
     changeHandler,
     blurHandler,
+    reset,
   };
 };
 

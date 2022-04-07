@@ -6,4 +6,7 @@ button {
   border: 1px solid $primary_color;
   color: $white;
   font-size: clamp(1.4rem, 0.9375vw, 1.8rem);
+  &:disabled {
+    opacity: 0.6;
+  }
 }

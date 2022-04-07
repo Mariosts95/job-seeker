@@ -25,6 +25,7 @@ import useLocalStorageState from '../../hooks/useLocalStorageState';
 import useInput from '../../hooks/useInput';
 
 const LoginForm = () => {
+  const [formIsValid, setFormIsValid] = useState(false);
   const { updateAuth } = UseAuth(); // update auth state in context
 
   const navigate = useNavigate(); // initialize navigate hook
@@ -48,6 +49,7 @@ const LoginForm = () => {
     hasError: emailHasError,
     changeHandler: emailChangeHandler,
     blurHandler: emailBlurHandler,
+    reset: emailReset,
   } = useInput(ValidateEmail, emailErrorMessage);
 
   const {
@@ -57,6 +59,7 @@ const LoginForm = () => {
     hasError: passwordHasError,
     changeHandler: passwordChangeHandler,
     blurHandler: passwordBlurHandler,
+    reset: passwordReset,
   } = useInput(ValidatePassword, passwordErrorMessage);
 
   const [errorMsg, setErrorMsg] = useState(''); // general error state
@@ -66,21 +69,28 @@ const LoginForm = () => {
     emailRef.current.focus();
   }, []);
 
-  // clean error messages on input change
+  // clean error messages on input change and set the validity of the form
   useEffect(() => {
     setErrorMsg('');
+    if (emailIsValid && passwordIsValid) {
+      setFormIsValid(true);
+    } else {
+      setFormIsValid(false);
+    }
   }, [email, password]);
 
   // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     // if there are no errors, proceed with login
-    if (emailIsValid && passwordIsValid) {
+    if (formIsValid) {
       ValidateUser(email, password)
         .then(({ data }) => {
           setToken(data.token.accessToken); // save access token in local storage
           setUser(data.user); // save user data in local storage
           updateAuth(true); // update auth state in context
+          emailReset(); // reset email input
+          passwordReset(); // reset password input
           navigate('/jobs'); // navigate to jobs page
         })
         .catch(({ response }) => {
@@ -123,7 +133,9 @@ const LoginForm = () => {
         {passwordHasError && <div className='error-msg'>{passwordError}</div>}
       </div>
       <div className='submit-container'>
-        <Button type='submit'>Login</Button>
+        <Button type='submit' disabled={!formIsValid}>
+          Login
+        </Button>
       </div>
       {errorMsg && <div className='error-msg'>{errorMsg}</div>}
     </form>

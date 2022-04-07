@@ -1,9 +1,14 @@
 // import styles
 import './button.scoped.scss';
 
-const Button = ({ type, onClick, children }) => {
+const Button = ({ type, onClick, disabled = false, children }) => {
   return (
-    <button type={type} onClick={onClick} className='button'>
+    <button
+      type={type}
+      onClick={onClick}
+      className='button'
+      disabled={disabled}
+    >
       {children}
     </button>
   );
