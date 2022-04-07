@@ -22,6 +22,7 @@ import { UseAuth } from '../../store/AuthProvider';
 
 // import custom hooks
 import useLocalStorageState from '../../hooks/useLocalStorageState';
+import useInput from '../../hooks/useInput';
 
 const LoginForm = () => {
   const { updateAuth } = UseAuth(); // update auth state in context
@@ -34,10 +35,30 @@ const LoginForm = () => {
 
   const emailRef = useRef(); // use useRef to store the input values
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  // set error messages
+  const emailErrorMessage = 'Invalid email';
+  const passwordErrorMessage =
+    'Your password must have minimum eight characters, at least one letter, one number and one special character';
+
+  // use useInput custom hook to handle input values
+  const {
+    value: email,
+    isValid: emailIsValid,
+    errorMessage: emailError,
+    hasError: emailHasError,
+    changeHandler: emailChangeHandler,
+    blurHandler: emailBlurHandler,
+  } = useInput(ValidateEmail, emailErrorMessage);
+
+  const {
+    value: password,
+    isValid: passwordIsValid,
+    errorMessage: passwordError,
+    hasError: passwordHasError,
+    changeHandler: passwordChangeHandler,
+    blurHandler: passwordBlurHandler,
+  } = useInput(ValidatePassword, passwordErrorMessage);
+
   const [errorMsg, setErrorMsg] = useState(''); // general error state
 
   // set focus on email input on load
@@ -45,30 +66,16 @@ const LoginForm = () => {
     emailRef.current.focus();
   }, []);
 
-  // clear email error message on input change
+  // clean error messages on input change
   useEffect(() => {
-    setEmailError('');
     setErrorMsg('');
-  }, [email]);
-
-  // clear password error message on input change
-  useEffect(() => {
-    setPasswordError('');
-    setErrorMsg('');
-  }, [password]);
+  }, [email, password]);
 
   // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    ValidateEmail(email) ? setEmailError('') : setEmailError('Invalid email');
-    ValidatePassword(password)
-      ? setPasswordError('')
-      : setPasswordError(
-          `Your password must have minimum eight characters, at least one letter, one number and one special character`
-        );
-
     // if there are no errors, proceed with login
-    if (!emailError && !passwordError) {
+    if (emailIsValid && passwordIsValid) {
       ValidateUser(email, password)
         .then(({ data }) => {
           setToken(data.token.accessToken); // save access token in local storage
@@ -93,37 +100,27 @@ const LoginForm = () => {
           labelText='Enter your email:'
           autoComplete='off'
           required
-          hasError={emailError}
+          hasError={emailHasError}
           refValue={emailRef}
           value={email}
           // validate email on blur to show error message
-          onBlur={() => {
-            ValidateEmail(email)
-              ? setEmailError('')
-              : setEmailError('Invalid email');
-          }}
-          onChange={(e) => setEmail(e.target.value)}
+          onBlur={emailBlurHandler}
+          onChange={emailChangeHandler}
         />
-        {emailError && <div className='error-msg'>{emailError}</div>}
+        {emailHasError && <div className='error-msg'>{emailError}</div>}
         <Input
           type='password'
           inputId='password'
           placeholder='Password'
           labelText='Enter your password:'
           required
-          hasError={passwordError}
+          hasError={passwordHasError}
           value={password}
           // validate password on blur to show error message
-          onBlur={() => {
-            ValidatePassword(password)
-              ? setPasswordError('')
-              : setPasswordError(
-                  `Your password must have minimum eight characters, at least one letter, one number and one special character`
-                );
-          }}
-          onChange={(e) => setPassword(e.target.value)}
+          onBlur={passwordBlurHandler}
+          onChange={passwordChangeHandler}
         />
-        {passwordError && <div className='error-msg'>{passwordError}</div>}
+        {passwordHasError && <div className='error-msg'>{passwordError}</div>}
       </div>
       <div className='submit-container'>
         <Button type='submit'>Login</Button>
