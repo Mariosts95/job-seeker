@@ -18,8 +18,8 @@ const JobsProvider = ({ children }) => {
   const [jobsLoading, setJobsLoading] = useState(true);
 
   // update jobs
-  const updateJobs = (token, page) => {
-    getJobs(token, page)
+  const updateJobs = (token, page, size, q) => {
+    getJobs(token, page, size, q)
       .then(({ data }) => {
         setJobs((prevJobs) => [...prevJobs, ...data.items]);
         setTotalJobs(data.totalCount);
@@ -31,9 +31,24 @@ const JobsProvider = ({ children }) => {
       });
   };
 
+  // clean jobs
+  const cleanJobs = () => {
+    setJobs([]);
+    setTotalJobs(0);
+    setTotalPages(0);
+    setJobsLoading(true);
+  };
+
   return (
     <JobsContext.Provider
-      value={{ jobs, totalJobs, totalPages, jobsLoading, updateJobs }}
+      value={{
+        jobs,
+        totalJobs,
+        totalPages,
+        jobsLoading,
+        updateJobs,
+        cleanJobs,
+      }}
     >
       {children}
     </JobsContext.Provider>
