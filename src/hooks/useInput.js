@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useInput = (validate, errorMsg) => {
+const useInput = (validate, errorMsg, trimmed = true) => {
   const [value, setValue] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isDirty, setIsDirty] = useState(false); // set to true when user starts typing
@@ -14,7 +14,7 @@ const useInput = (validate, errorMsg) => {
 
   // update the value and set error message if user has typed and there is an error
   const changeHandler = (e) => {
-    setValue(e.target.value.trim());
+    trimmed ? setValue(e.target.value.trim()) : setValue(e.target.value);
     setIsDirty(false);
   };
 

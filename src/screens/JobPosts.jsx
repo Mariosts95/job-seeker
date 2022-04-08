@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // import components
-import Input from '../components/UI/Input';
 import Button from '../components/UI/Button';
 import JobPost from '../components/JobPost';
 import Modal from '../components/Modal';
 import Loader from '../components/UI/Loader';
+import Search from '../components/Search';
 
 // import styles
 import './jobPosts.scoped.scss';
@@ -56,8 +56,6 @@ const JobPosts = () => {
     setJobModalIsOpen(false);
   };
 
-  if (jobsLoading || jobs?.length === 0) return <Loader />;
-
   return (
     <>
       <Modal isOpen={jobModalIsOpen} jobId={jobId} onClose={closeJobModal} />
@@ -69,13 +67,7 @@ const JobPosts = () => {
             <p className='user-email'>{user?.email}</p>
           </div>
 
-          <div className='search-container'>
-            <Input
-              labelText='Search for a job'
-              inputId='search-input'
-              placeholder='Enter keyword'
-            />
-          </div>
+          <Search />
 
           <h2 className='main-header-1 results-title'>
             Showing {jobsLoading ? 0 : jobs?.length} of {totalJobs} job posts
@@ -83,9 +75,10 @@ const JobPosts = () => {
         </div>
 
         <div className='job-posts'>
-          {jobsLoading && <Loader />}
+          {(jobsLoading || jobs?.length === 0) && <Loader />}
 
           {!jobsLoading &&
+            jobs?.length !== 0 &&
             jobs.map((job) => (
               <JobPost
                 key={job.id}
