@@ -12,6 +12,11 @@ const ValidatePassword = (pass) => {
   );
 };
 
+// validate number via regex
+const ValidateNumber = (number) => {
+  return /^[0-9]+$/.test(number);
+};
+
 // send axios request to server to check user credentials
 const ValidateUser = async (email, password) => {
   return axios.post(`${import.meta.env.VITE_API_BASE_PATH}/login`, {
@@ -20,4 +25,4 @@ const ValidateUser = async (email, password) => {
   });
 };
 
-export { ValidateEmail, ValidatePassword, ValidateUser };
+export { ValidateEmail, ValidatePassword, ValidateUser, ValidateNumber };

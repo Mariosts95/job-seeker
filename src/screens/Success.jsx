@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 // import react router
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // import components
 import Button from '../components/UI/Button';
@@ -19,11 +19,15 @@ const Success = () => {
   // initialize navigate hook
   const navigate = useNavigate();
 
+  // get jobs name from modal
+  const { state } = useLocation();
+  const { jobTitle } = state;
+
   // redirect to home page after 5 seconds
   useEffect(() => {
     const redirectCountdown = setTimeout(() => {
       setCountdown((prevCountdown) => prevCountdown - 1);
-      countdown === 0 && navigate('/');
+      countdown === 0 && navigate('/jobs');
     }, 1 * 1000);
 
     return () => {
@@ -35,13 +39,13 @@ const Success = () => {
     <div className='page-container success-container'>
       <img className='success-icon' src={SuccessIcon} alt='success icon' />
       <p>Application successful</p>
-      <h2 className='main-header-1 job-title'>Job Title Applied</h2>
+      <h2 className='main-header-1 job-title'>{jobTitle}</h2>
       <p className='redirect-msg'>
         You we'll be redirected back automatically in {countdown}...
       </p>
       <Button
         onClick={() => {
-          navigate(-1);
+          navigate('/jobs');
         }}
       >
         Back to job list

@@ -26,6 +26,7 @@ const useInput = (validate, errorMsg, trimmed = true) => {
   const reset = () => {
     setValue('');
     setErrorMessage('');
+    setIsDirty(false);
   };
 
   return {

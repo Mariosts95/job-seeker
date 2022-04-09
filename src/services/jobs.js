@@ -22,4 +22,17 @@ const getJob = async (accessToken, id) => {
   );
 };
 
-export { getJobs, getJob };
+// apply job with axios
+const applyJob = async (accessToken, id, yearsOfExperience) => {
+  return await axios.post(
+    `${import.meta.env.VITE_API_BASE_PATH}/job-posts/apply`,
+    { id, yearsOfExperience },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+};
+
+export { getJobs, getJob, applyJob };
