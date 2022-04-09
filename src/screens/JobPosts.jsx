@@ -22,7 +22,8 @@ import { UseAuth } from '../store/AuthProvider';
 
 const JobPosts = () => {
   // access jobs state from context
-  const { jobs, jobsLoading, updateJobs, totalJobs, totalPages } = UseJobs();
+  const { jobs, jobsLoading, updateJobs, totalJobs, totalPages, cleanJobs } =
+    UseJobs();
   const { isAuth } = UseAuth();
 
   // modal state
@@ -43,6 +44,9 @@ const JobPosts = () => {
   // update jobs on mount
   useEffect(() => {
     if (!isAuth) return navigate('/');
+    // clean jobs from redirect
+    cleanJobs();
+    // get jobs
     updateJobs(token, currentPage);
   }, []);
 
@@ -58,7 +62,14 @@ const JobPosts = () => {
 
   return (
     <>
-      <Modal isOpen={jobModalIsOpen} jobId={jobId} onClose={closeJobModal} />
+      <Modal
+        isOpen={jobModalIsOpen}
+        jobId={jobId}
+        onClose={() => {
+          setJobId('');
+          closeJobModal();
+        }}
+      />
 
       <div className='job-posts-container page-container'>
         <div className='top-section'>
