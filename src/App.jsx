@@ -1,14 +1,19 @@
+import { lazy, Suspense } from 'react';
+
 // import react router
 import { Routes, Route } from 'react-router-dom';
 
 // import views
 import Login from './screens/Login';
-import JobPosts from './screens/JobPosts';
-import Success from './screens/Success';
-import Error404 from './screens/Error404';
+
+// add lazy loading
+const JobPosts = lazy(() => import('./screens/JobPosts'));
+const Success = lazy(() => import('./screens/Success'));
+const Error404 = lazy(() => import('./screens/Error404'));
 
 // import components
 import Header from './components/UI/Header';
+import Loader from './components/UI/Loader';
 
 // import styles
 import './sass/index.scss';
@@ -27,21 +32,37 @@ const App = () => {
           path='jobs'
           element={
             <JobsProvider>
-              <JobPosts />
+              <Suspense fallback={<Loader />}>
+                <JobPosts />
+              </Suspense>
             </JobsProvider>
           }
         >
           <Route
             path=':id'
             element={
-              <JobsProvider>
+              <Suspense fallback={<Loader />}>
                 <JobPosts />
-              </JobsProvider>
+              </Suspense>
             }
           />
         </Route>
-        <Route path='success' element={<Success />} />
-        <Route path='*' element={<Error404 />} />
+        <Route
+          path='success'
+          element={
+            <Suspense fallback={<Loader />}>
+              <Success />
+            </Suspense>
+          }
+        />
+        <Route
+          path='*'
+          element={
+            <Suspense fallback={<Loader />}>
+              <Error404 />
+            </Suspense>
+          }
+        />
       </Routes>
     </AuthProvider>
   );
