@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 // import components
-import Button from '../components/UI/Button';
 import JobPost from '../components/JobPost';
 import Modal from '../components/Modal';
 import Loader from '../components/UI/Loader';
@@ -38,6 +37,28 @@ const JobPosts = () => {
     cleanJobs(); // clean jobs from redirect
     updateJobs(token, currentPage); // get jobs
   }, []);
+
+  // infinite scroll
+  const handleScroll = (e) => {
+    const bodyScrollableHeight = e.target.documentElement.scrollHeight; // body scrollable height
+    const windowBottom =
+      window.innerHeight + e.target.documentElement.scrollTop; // window height + scroll from top
+    // if window bottom is equal to body height
+    if (windowBottom >= bodyScrollableHeight) {
+      // !BUG if scroll way to fast at the last page it fetches data before React updates state
+      // overflow safe guard
+      if (currentPage < totalPages) {
+        updateJobs(token, currentPage + 1);
+        setCurrentPage((prevPage) => prevPage + 1);
+      }
+    }
+  };
+
+  // infinite scroll listener
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  });
 
   // open modal handler
   const openJobModal = () => {
@@ -93,18 +114,7 @@ const JobPosts = () => {
                 }}
               />
             ))}
-          {currentPage < totalPages && (
-            <Button
-              onClick={() => {
-                if (currentPage < totalPages) {
-                  setCurrentPage(currentPage + 1);
-                  updateJobs(token, currentPage + 1);
-                }
-              }}
-            >
-              Get more jobs
-            </Button>
-          )}
+          {currentPage < totalPages && <Loader />}
         </div>
       </div>
     </>
