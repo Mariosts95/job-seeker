@@ -14,6 +14,7 @@ const Error404 = lazy(() => import('./screens/Error404'));
 // import components
 import Header from './components/UI/Header';
 import Loader from './components/UI/Loader';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // import styles
 import './sass/index.scss';
@@ -32,27 +33,22 @@ const App = () => {
           path='jobs'
           element={
             <JobsProvider>
-              <Suspense fallback={<Loader />}>
-                <JobPosts />
-              </Suspense>
+              <ProtectedRoute>
+                <Suspense fallback={<Loader />}>
+                  <JobPosts />
+                </Suspense>
+              </ProtectedRoute>
             </JobsProvider>
           }
-        >
-          <Route
-            path=':id'
-            element={
-              <Suspense fallback={<Loader />}>
-                <JobPosts />
-              </Suspense>
-            }
-          />
-        </Route>
+        />
         <Route
           path='success'
           element={
-            <Suspense fallback={<Loader />}>
-              <Success />
-            </Suspense>
+            <ProtectedRoute>
+              <Suspense fallback={<Loader />}>
+                <Success />
+              </Suspense>
+            </ProtectedRoute>
           }
         />
         <Route

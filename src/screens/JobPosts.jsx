@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
 
-// import react router
-import { useNavigate } from 'react-router-dom';
-
 // import components
 import Button from '../components/UI/Button';
 import JobPost from '../components/JobPost';
@@ -18,13 +15,11 @@ import useLocalStorageState from '../hooks/useLocalStorageState';
 
 // import context
 import { UseJobs } from '../store/JobsProvider';
-import { UseAuth } from '../store/AuthProvider';
 
 const JobPosts = () => {
   // access jobs state from context
   const { jobs, jobsLoading, updateJobs, totalJobs, totalPages, cleanJobs } =
     UseJobs();
-  const { isAuth } = UseAuth();
 
   // modal state
   const [jobModalIsOpen, setJobModalIsOpen] = useState(false);
@@ -38,16 +33,10 @@ const JobPosts = () => {
   // get access token from local storage
   const [token, _] = useLocalStorageState('accessToken');
 
-  // initialize navigate hook
-  const navigate = useNavigate();
-
   // update jobs on mount
   useEffect(() => {
-    if (!isAuth) return navigate('/');
-    // clean jobs from redirect
-    cleanJobs();
-    // get jobs
-    updateJobs(token, currentPage);
+    cleanJobs(); // clean jobs from redirect
+    updateJobs(token, currentPage); // get jobs
   }, []);
 
   // open modal handler
