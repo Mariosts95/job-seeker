@@ -25,16 +25,17 @@ import useLocalStorageState from '../../hooks/useLocalStorageState';
 import useInput from '../../hooks/useInput';
 
 const LoginForm = () => {
-  const [formIsValid, setFormIsValid] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(null); // form validation state
+  const [errorMsg, setErrorMsg] = useState(''); // general error state
   const { updateAuth } = UseAuth(); // update auth state in context
+
+  const emailRef = useRef(); // use useRef to target email input
 
   const navigate = useNavigate(); // initialize navigate hook
 
   // use local storage custom hook to save user data in local storage
-  const [token, setToken] = useLocalStorageState('accessToken', '');
-  const [user, setUser] = useLocalStorageState('user', '');
-
-  const emailRef = useRef(); // use useRef to store the input values
+  const [_, setToken] = useLocalStorageState('accessToken', '');
+  const [__, setUser] = useLocalStorageState('user', '');
 
   // set error messages
   const emailErrorMessage = 'Invalid email';
@@ -62,8 +63,6 @@ const LoginForm = () => {
     reset: passwordReset,
   } = useInput(ValidatePassword, passwordErrorMessage);
 
-  const [errorMsg, setErrorMsg] = useState(''); // general error state
-
   // set focus on email input on load
   useEffect(() => {
     emailRef.current.focus();
@@ -72,18 +71,16 @@ const LoginForm = () => {
   // clean error messages on input change and set the validity of the form
   useEffect(() => {
     setErrorMsg('');
-    if (emailIsValid && passwordIsValid) {
-      setFormIsValid(true);
-    } else {
-      setFormIsValid(false);
-    }
+    emailIsValid && passwordIsValid
+      ? setFormIsValid(true)
+      : setFormIsValid(false);
   }, [email, password]);
 
   // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if there are no errors, proceed with login
     if (!formIsValid) return;
+    // if there are no errors, proceed with login
     ValidateUser(email, password)
       .then(({ data }) => {
         setToken(data.token.accessToken); // save access token in local storage
@@ -111,7 +108,6 @@ const LoginForm = () => {
           hasError={emailHasError}
           refValue={emailRef}
           value={email}
-          // validate email on blur to show error message
           onBlur={emailBlurHandler}
           onChange={emailChangeHandler}
         />
@@ -124,7 +120,6 @@ const LoginForm = () => {
           required
           hasError={passwordHasError}
           value={password}
-          // validate password on blur to show error message
           onBlur={passwordBlurHandler}
           onChange={passwordChangeHandler}
         />
