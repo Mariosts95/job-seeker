@@ -20,7 +20,7 @@ const Header = () => {
     <header className='main-header'>
       <div className='header-wrapper flex'>
         <div className='header-logo'>
-          <Link to='/'>kariera.gr</Link>
+          <Link to='/'>Job Seeker</Link>
         </div>
         {isAuth && (
           <div className='logout'>
